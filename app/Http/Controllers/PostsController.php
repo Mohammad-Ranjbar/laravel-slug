@@ -25,14 +25,26 @@ class PostsController extends Controller
         $post->title = $request->title;
         $post->body = $request->body;
 
-        $post->slug = str_slug($request->title);
+        $slug = str_slug($request->title);
 
-        $index = 1;
-        while(Post::whereSlug($post->slug)->exists()){
+//        $index = 1;
+//        while(Post::whereSlug($post->slug)->exists()){
+//
+//            $post->slug = str_slug($request->title).'-'.$index++;
+//        }
 
-            $post->slug = str_slug($request->title).'-'.$index++;
+        $count = Post::whereRaw("slug RLIKE '^{$slug}(-[0-9]*)?$'")->count();
 
-        }
+
+//        if ($count){
+//
+//            $post->slug = "{$slug}-{$count}";
+//
+//        }
+//
+//        $post->slug = $slug;
+
+        $post->slug = $count ? "{$slug}-{$count}" : $slug;
 
         $post->save();
 
