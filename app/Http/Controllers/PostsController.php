@@ -25,9 +25,10 @@ class PostsController extends Controller
         $post->title = $request->title;
         $post->body = $request->body;
 
-        $slug = str_slug($request->title);
+        $post->slug = str_slug($request->title);
+        /* slug with regular expression
 
-//        $index = 1;
+//        $index = 1;//N+1 problem
 //        while(Post::whereSlug($post->slug)->exists()){
 //
 //            $post->slug = str_slug($request->title).'-'.$index++;
@@ -44,10 +45,23 @@ class PostsController extends Controller
 //
 //        $post->slug = $slug;
 
-        $post->slug = $count ? "{$slug}-{$count}" : $slug;
+//        $post->slug = $count ? "{$slug}-{$count}" : $slug;
+*/
+       $latestSlug = Post::whereRaw("slug RLIKE '^{$post->slug}(-[0-9]*)?$'")
+
+                    ->orderBy('id')
+                    ->pluck('slug');
+
+        if ($latestSlug){
+
+            $pieces = explode('-',$latestSlug);
+            $number = intval(end($pieces));
+            $post->slug .='-'.($number+1);
+
+        }
 
         $post->save();
-
+//$post->makeSlug($request);
         return $post;
     }
 
