@@ -3,7 +3,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', 'HomeController@page');
+Route::get('/',function (){
+	return 'welcome';
+});
 
 
 
