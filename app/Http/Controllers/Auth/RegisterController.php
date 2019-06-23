@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\UserRegistered;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -63,10 +64,28 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+        //activation code Here
+			//$this->sendActivationCodeTo($user);
+	    //Role Code
+	        //$this->assignRoleTo($user);
+	    // $this->sendActivationCodeTo($user)->assignRoleTo($user);//chon akhare har kodomesh return this gozashtim mitonim bechasbonim
+
+	    event(new UserRegistered($user));
+        return $user;
     }
+    // protected function sendActivationCodeTo($user)
+    // {
+    //     \Log::info('activation',['user' => $user]);
+    //     return $this;
+    // }
+    // protected function assignRoleTo($user)
+    // {
+	//     \Log::info('role',['user' => $user]);
+	//     return $this;
+    // }
 }
