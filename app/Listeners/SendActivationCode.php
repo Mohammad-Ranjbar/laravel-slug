@@ -6,7 +6,7 @@ use App\Events\UserRegistered;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendActivationCode
+class SendActivationCode implements ShouldQueue
 {
     /**
      * Create the event listener.
