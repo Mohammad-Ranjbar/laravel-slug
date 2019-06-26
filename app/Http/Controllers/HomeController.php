@@ -27,17 +27,5 @@ class HomeController extends Controller
     {
         return view('home');
     }
-    // public function page()
-    // {
-	//     $menu =Menu::new()
-	//                ->prefixLinks('/foo')
-	//                ->submenu(function (Menu $menu) {
-	// 	               $menu
-	// 		               ->prefixLinks('/bar')
-	// 		               ->add('/baz', 'Baz');
-	//                });
-	//
-	//
-	//     return view('welcome',compact('menu'));
-    // }
+
 }
